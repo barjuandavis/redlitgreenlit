@@ -5,7 +5,7 @@
     <string name="create_room">I\'m a Guard</string>
     <string name="join_room">I\'m a Player</string>
     <string name="player_name">Please enter your name here</string>
-    <string name="connecting_to">Connecting to %1%s</string>
+    <string name="connecting_to">Connecting to %1$s</string>
     <string name="status_disconnected">Disconnected</string>
     <string name="searching">Searching for players (tap to stop)</string>
     <string name="finding">Finding rooms (tap to stop)</string>
@@ -17,13 +17,9 @@
     <string name="filled_slot">%1$s (Tap to kick)</string>
     <string name="action_find_opponents">Find opponent</string>
     <string name="action_disconnect">Disconnect</string>
-
-    <string name="choice_rock">Rock</string>
-    <string name="choice_paper">Paper</string>
-    <string name="choice_scissors">Scissors</string>
+    <string name="joined_to_x_room">Joined to: %1$s</string>
 
     <string name="red_light">Red Light!</string>
     <string name="green_light">Green Light!</string>
 
-    <string name="game_score">%1$d : %2$d</string>
 </resources>
