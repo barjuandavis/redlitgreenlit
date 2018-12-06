@@ -5,10 +5,12 @@
               android:padding="10dp"
               android:orientation="vertical">
 
-    <EditText
-            android:id="@+id/edit1"
+    <Button
+            android:text="@string/create_room"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text" />
-
+            android:layout_height="wrap_content" android:id="@+id/create_button"/>
+    <Button
+            android:text="@string/join_room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/join_button"/>
 </LinearLayout>

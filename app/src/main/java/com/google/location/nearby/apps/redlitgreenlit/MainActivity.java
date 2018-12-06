@@ -11,7 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import com.google.android.gms.nearby.connection.*;
+
+import java.util.ArrayList;
 
 /**
  * Activity controlling the Rock Paper Scissors game
@@ -19,8 +23,14 @@ import com.google.android.gms.nearby.connection.*;
 public class MainActivity extends AppCompatActivity {
     static final String TAG = "RedLitGreenLit";
     static final Strategy STRATEGY = Strategy.P2P_STAR;
+    static final int MAX_PLAYERS = 5;
     private static final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.ACCESS_COARSE_LOCATION,};
     private static final int REQUEST_CODE_REQUIRED_PERMISSIONS = 1;
+
+    private String playerName;
+    private boolean searching;
+    private ArrayList<String> playerList;
+
     final EndpointDiscoveryCallback endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
         @Override
         public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo endpointInfo) {
@@ -46,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-    RoomFragment roomFragment;
     private ConnectionsClient connectionsClient;
     final ConnectionLifecycleCallback connectionLifecycleCallback = new ConnectionLifecycleCallback() {
         @Override
@@ -68,6 +77,12 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    //fragments
+    RoomFragment roomFragment;
+    LobbyFragment lobbyFragment;
+
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
     private static boolean hasPermissions(Context context, String... permissions) {
         for (String permission : permissions) {
             if (ContextCompat.checkSelfPermission(context, permission)
@@ -82,8 +97,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_main);
-
-
+        playerName = getIntent().getStringExtra("name");
+        searching = false;
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        lobbyFragment = new LobbyFragment();
+        fragmentTransaction.add(R.id.fragment_c,lobbyFragment).commit();
     }
 
     @Override
@@ -118,17 +137,15 @@ public class MainActivity extends AppCompatActivity {
         recreate();
     }
 
-    private void broadcastRoom() {
+    public void broadcastRoom() {
         flipSearchSwitch();
         if (isSearching()) {
-            broadcastButton.setText(R.string.searching);
             //PACKAGE NAME IS THE SERVICEID
-            roomName = roomName.concat("\'s room");
-            roomClient.startAdvertising(roomName, getPackageName(), connectionLifecycleCallback,
+            String s = playerName.concat(" - Room");
+            connectionsClient.startAdvertising(s, getPackageName(), connectionLifecycleCallback,
                     new AdvertisingOptions.Builder().setStrategy(MainActivity.STRATEGY).build());
         } else {
-            broadcastButton.setText(R.string.start_searching);
-            roomClient.stopAdvertising();
+            connectionsClient.stopAdvertising();
         }
     }
 
@@ -143,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
     }
     public boolean isSearching() {return searching;}
     public void flipSearchSwitch() {this.searching = !this.searching;}
-    public void addPlayer(String playerId) {if (!isFull()) {playerList.add(playerId);}
+    public void addPlayer(String playerId) {if (!isFull()) {playerList.add(playerId);}}
     public boolean isFull() {return playerList.size() == MAX_PLAYERS;}
-
+    public void removePlayer(String playerId) {playerList.remove(playerId);}
 
 }

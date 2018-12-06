@@ -21,12 +21,8 @@ public class RoomFragment extends AppCompatActivity {
     //UI elements (especially dynamic ones)
     private LinearLayout playerListLayout;
     // Our handle to Nearby Connections
-    private ConnectionsClient roomClient;
-    private ArrayList<String> playerList;
     private Button broadcastButton;
     private Button[] playerButton;
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle bundle) {
@@ -42,14 +38,7 @@ public class RoomFragment extends AppCompatActivity {
         playerButton[3].findViewById(R.id.player4);
         playerButton[4].findViewById(R.id.player5);
         this.searching = false;
-        broadcastButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                broadcastRoom();
-            }
-        });
-        roomClient = Nearby.getConnectionsClient(this);
-    }
+}
 
 
     //update this method for every successfully connected OR disconnected player.
