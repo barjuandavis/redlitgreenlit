@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Red Light, Green Light</string>
-  <string name="error_missing_permissions">Cannot start without required permissions</string>
-  <string name="create_room">I\'m a Guard (Create Room)</string>
-  <string name="join_room">I\'m a Player (Find a Room)</string>
-  <string name="player_name">Please enter your name here</string>
+    <string name="app_name">Red Light, Green Light</string>
+    <string name="error_missing_permissions">Cannot start without required permissions</string>
+    <string name="create_room">I\'m a Guard (Create Room)</string>
+    <string name="join_room">I\'m a Player (Find a Room)</string>
+    <string name="player_name">Please enter your name here</string>
 
 
-  <string name="status_disconnected">Disconnected</string>
-  <string name="searching">Searching for players (tap to stop)</string>
-  <string name="start_searching">Start Searching</string>
-  <string name="status_connected">Connected</string>
-  <string name="connected_user">Connected Users</string>
-  <string name="empty_slot">(empty)</string>
-  <string name="filled_slot">%1$s (Tap to kick)</string>
-  <string name="action_find_opponents">Find opponent</string>
-  <string name="action_disconnect">Disconnect</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="searching">Searching for players (tap to stop)</string>
+    <string name="start_searching">Start Searching</string>
+    <string name="status_connected">Connected</string>
+    <string name="connected_user">Connected Users</string>
+    <string name="empty_slot">(empty)</string>
+    <string name="filled_slot">%1$s (Tap to kick)</string>
+    <string name="action_find_opponents">Find opponent</string>
+    <string name="action_disconnect">Disconnect</string>
 
-  <string name="choice_rock">Rock</string>
-  <string name="choice_paper">Paper</string>
-  <string name="choice_scissors">Scissors</string>
+    <string name="choice_rock">Rock</string>
+    <string name="choice_paper">Paper</string>
+    <string name="choice_scissors">Scissors</string>
 
-  <string name="red_light">Red Light!</string>
-  <string name="green_light">Green Light!</string>
+    <string name="red_light">Red Light!</string>
+    <string name="green_light">Green Light!</string>
 
-  <string name="game_score">%1$d : %2$d</string>
+    <string name="game_score">%1$d : %2$d</string>
 </resources>
