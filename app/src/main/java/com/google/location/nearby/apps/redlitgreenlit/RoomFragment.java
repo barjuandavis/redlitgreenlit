@@ -24,9 +24,24 @@ public class RoomFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.gameroom_fragment, container, false);
-        mainActivity = (MainActivity) getActivity();
+
         playerButton = new Button[5];
         broadcastButton = v.findViewById(R.id.broadcast);
+
+        playerListLayout = v.findViewById(R.id.player_list);
+            playerButton[0] = v.findViewById(R.id.player1);
+            playerButton[1] = v.findViewById(R.id.player2);
+            playerButton[2] = v.findViewById(R.id.player3);
+            playerButton[3] = v.findViewById(R.id.player4);
+            playerButton[4] = v.findViewById(R.id.player5);
+
+        return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mainActivity = (MainActivity) getActivity();
         broadcastButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,12 +53,6 @@ public class RoomFragment extends Fragment {
                 }
             }
         });
-        playerListLayout = v.findViewById(R.id.player_list);
-            playerButton[0] = v.findViewById(R.id.player1);
-            playerButton[1] = v.findViewById(R.id.player2);
-            playerButton[2] = v.findViewById(R.id.player3);
-            playerButton[3] = v.findViewById(R.id.player4);
-            playerButton[4] = v.findViewById(R.id.player5);
         for (int i = 0; i<5; i++) {
             playerButton[i].setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -52,7 +61,7 @@ public class RoomFragment extends Fragment {
                 }
             });
         }
-        return v;
+
     }
 
     @Override

@@ -18,8 +18,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.*;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity controlling the Rock Paper Scissors game
@@ -171,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void findRoom() {
         flipSearchSwitch();
-        if (isFinding()) playerConnectionClient.startDiscovery(playerName, endpointDiscoveryCallback,
+        if (isFinding()) playerConnectionClient.startDiscovery(getPackageName(), endpointDiscoveryCallback,
                 new DiscoveryOptions.Builder().setStrategy(MainActivity.STRATEGY).build());
         else playerConnectionClient.stopDiscovery();
     }
