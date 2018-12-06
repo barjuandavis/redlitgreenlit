@@ -24,6 +24,11 @@ public class JoinRoomFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mainActivity.findRoom();
+                if (mainActivity.isFinding()) {
+                    findRoom.setText(R.string.finding);
+                } else {
+                    findRoom.setText(R.string.start_finding);
+                }
             }
         });
 

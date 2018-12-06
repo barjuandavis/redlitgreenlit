@@ -28,6 +28,7 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "RedLitGreenLit";
+    private static final String CLASSTAG = "MainActivity";
     private static final Strategy STRATEGY = Strategy.P2P_STAR;
     private static final int MAX_PLAYERS = 5;
     private static final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.ACCESS_COARSE_LOCATION,};
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo endpointInfo) {
             //oooo u got an endpoint!
+            Log.v(CLASSTAG,endpointId + ": onEndpointFound! Making Connection request...");
             CharSequence c = "Connecting to " + endpointId;
             Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
             roomConnectionClient.requestConnection(playerName,endpointId,roomCallback);
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onEndpointLost(@NonNull String endpointId) {
+            Log.v(CLASSTAG,"Connection to Room " + endpointId + " was lost :(");
             CharSequence c = "Connection to Room " + endpointId + " was lost :(";
             Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
         }
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private final ConnectionLifecycleCallback roomCallback = new ConnectionLifecycleCallback() {
         @Override
         public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
+            Log.v(CLASSTAG,"Connection Initiated with " + endpointId);
             roomConnectionClient.acceptConnection(endpointId, payloadCallback);
             CharSequence c = "Hello, " + connectionInfo.getEndpointName() + "!";
             Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
@@ -79,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onConnectionResult(String endpointId, ConnectionResolution result) {
             if (result.getStatus().isSuccess()) {
+                Log.v(CLASSTAG,"player " + endpointId + " added!");
                 addPlayer(endpointId);
             }
         }
@@ -165,17 +170,25 @@ public class MainActivity extends AppCompatActivity {
         if (isSearching()) {
             //PACKAGE NAME IS THE SERVICEID
             String s = playerName.concat(" - Room");
+            Log.v(CLASSTAG,"Room " + s + " is Broadcasting!");
             roomConnectionClient.startAdvertising(s, getPackageName(), roomCallback,
                     new AdvertisingOptions.Builder().setStrategy(MainActivity.STRATEGY).build());
         } else {
+            Log.v(CLASSTAG,"Room broadcasting stopped");
             roomConnectionClient.stopAdvertising();
         }
     }
     public void findRoom() {
         flipSearchSwitch();
-        if (isFinding()) playerConnectionClient.startDiscovery(getPackageName(), endpointDiscoveryCallback,
+        if (isFinding()) {
+            Log.v(CLASSTAG,"Finding a room with serviceId: " + getPackageName());
+            playerConnectionClient.startDiscovery(getPackageName(), endpointDiscoveryCallback,
                 new DiscoveryOptions.Builder().setStrategy(MainActivity.STRATEGY).build());
-        else playerConnectionClient.stopDiscovery();
+        }
+        else {
+            Log.v(CLASSTAG,"Room finding stopped.");
+            playerConnectionClient.stopDiscovery();
+        }
     }
 
 

@@ -8,7 +8,9 @@
     <string name="connecting_to">Connecting to %1%s</string>
     <string name="status_disconnected">Disconnected</string>
     <string name="searching">Searching for players (tap to stop)</string>
+    <string name="finding">Finding rooms (tap to stop)</string>
     <string name="start_searching">Start Searching</string>
+    <string name="start_finding">Start Finding</string>
     <string name="status_connected">Connected</string>
     <string name="connected_user">Connected Users</string>
     <string name="empty_slot">(empty)</string>
