@@ -36,7 +36,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Activity controlling the Rock Paper Scissors game
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener{
     private static final String TAG = "RedLitGreenLit";
     private static final String CLASSTAG = "MainActivity";
     private static final Strategy STRATEGY = Strategy.P2P_STAR;
@@ -47,6 +47,31 @@ public class MainActivity extends AppCompatActivity {
     static final int ROLE_PLAYER = 123;
     static final int MINTA_JARAK = 573;
     static int ROLE;
+    long lastUpdate;
+    Commands currentLight;
+    boolean gerak;
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float [] values = event.values;
+            float x = values[0];
+            float y = values[0];
+            float z = values[0];
+            Log.d(CLASSTAG,"sensor detek");
+            float acVect = (x*x + y*y + z*z) / (SensorManager.GRAVITY_EARTH*SensorManager.GRAVITY_EARTH);
+            long actualTime = System.currentTimeMillis();
+            if (acVect >= 2) {
+                Log.d(CLASSTAG,"KEBANYAKAN GERAK");
+                if (actualTime - lastUpdate < 200) return;
+                if (currentLight.equals(Commands.RED_LIGHT)) {
+                    gerak = true;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     public enum Commands {
         RED_LIGHT,
@@ -90,30 +115,9 @@ public class MainActivity extends AppCompatActivity {
             Log.v(CLASSTAG,c.toString() + " Received!");
             joinRoomFragment.commandResponse(c);
             if (c.equals(Commands.RED_LIGHT)) {
-                final long lastUpdate = System.currentTimeMillis();
                 Log.d(CLASSTAG,"REDLIGHTTTT");
-                SensorEventListener s = new SensorEventListener() {
-                    @Override
-                    public void onSensorChanged(SensorEvent event) {
-                        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                            float [] values = event.values;
-                            float x = values[0];
-                            float y = values[0];
-                            float z = values[0];
-
-                            float acVect = (x*x + y*y + z*z) / (SensorManager.GRAVITY_EARTH*SensorManager.GRAVITY_EARTH);
-                            long actualTime = System.currentTimeMillis();
-                            if (acVect >= 1.5f) {
-                                if (actualTime - lastUpdate < 200) return;
-                                //player gerak
-                                slaveConnectionClient.sendPayload(roomId,Payload.fromBytes(Commands.PLAYER_MOVED.name().getBytes(UTF_8)));
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-                };
+                lastUpdate = System.currentTimeMillis();
+                if (gerak) slaveConnectionClient.sendPayload(roomId,Payload.fromBytes(Commands.PLAYER_MOVED.name().getBytes()));
             } else if (c.equals(Commands.PLAYER_WINS) || c.equals(Commands.KICK_PLAYER)) {
                 //connection cleanup
                  slaveConnectionClient.disconnectFromEndpoint(roomId);
@@ -208,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
         playerName = getIntent().getStringExtra("playerName");
         searching = false;
         finding = false;
+        gerak = false;
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         lobbyFragment = new LobbyFragment();
@@ -313,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendSpecificCommand(Commands c, String playerId) {
+        if (c.equals(Commands.RED_LIGHT) || c.equals(Commands.GREEN_LIGHT)) currentLight = c;
         roomConnectionClient.sendPayload(
                 playerId, Payload.fromBytes(c.name().getBytes(UTF_8)));
     }
