@@ -1,6 +1,8 @@
 package com.google.location.nearby.apps.redlitgreenlit;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -61,14 +63,37 @@ public class RoomFragment extends Fragment {
                 }
             }
         });
-        for (int i = 0; i<5; i++) {
-            playerButton[i].setOnClickListener(new View.OnClickListener() {
+            playerButton[0].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    playerMenu(0);
                 }
             });
-        }
+            playerButton[1].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    playerMenu(1);
+                }
+            });
+            playerButton[2].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    playerMenu(2);
+                }
+            });
+            playerButton[3].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    playerMenu(3);
+                }
+            });
+            playerButton[4].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    playerMenu(4);
+                }
+            });
+
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,8 +109,7 @@ public class RoomFragment extends Fragment {
 
     }
     public void setPlayerSlot(int id, String playerName) {
-        String s = String.format(playerName, R.string.filled_slot);
-        playerButton[id].setText(s);
+        playerButton[id].setText(playerName);
         playerButton[id].setEnabled(true);
         playerButton[id].setBackgroundColor(getResources().getColor(R.color.colorSecondaryLight, null));
     }
@@ -99,7 +123,6 @@ public class RoomFragment extends Fragment {
             flipLight();
         }
     }
-
     private void flipLight() {
         if (redlight) {
             //flip to green
@@ -116,14 +139,30 @@ public class RoomFragment extends Fragment {
 
 
     }
-
-
     public boolean isGameStarted() {
         return gameStarted;
     }
-
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
+    }
+    public void playerMenu(int i) {
+        AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+        b.setMessage("What do you want to do with " + playerButton[i].getText() + "?")
+                .setCancelable(true)
+                .setPositiveButton("Win", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton("Kick", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        AlertDialog a = b.create();
+        a.show();
     }
 
 }

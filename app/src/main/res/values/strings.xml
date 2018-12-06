@@ -18,6 +18,10 @@
     <string name="action_find_opponents">Find opponent</string>
     <string name="action_disconnect">Disconnect</string>
     <string name="joined_to_x_room">Joined to: %1$s</string>
+    <string name="you_win">You Win!</string>
+    <string name="you_kicked">You have been Kicked.</string>
+
+
 
     <string name="red_light">Red Light!</string>
     <string name="green_light">Green Light!</string>

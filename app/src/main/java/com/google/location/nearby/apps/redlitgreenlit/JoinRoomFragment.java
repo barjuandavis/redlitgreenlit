@@ -45,4 +45,23 @@ public class JoinRoomFragment extends Fragment {
         String s = String.format(roomName, R.string.joined_to_x_room);
         this.roomName.setText("You're in: " + s);
     }
+
+    public void commandResponse(MainActivity.Commands c) {
+        switch (c) {
+            case RED_LIGHT:
+                this.roomName.setText(R.string.red_light);
+                break;
+            case GREEN_LIGHT:
+                this.roomName.setText(R.string.green_light);
+                break;
+            case KICK_PLAYER:
+                this.roomName.setText(R.string.you_kicked);
+                break;
+            case PLAYER_WINS:
+                this.roomName.setText(R.string.you_win);
+                break;
+        }
+    }
+
+
 }

@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         RED_LIGHT,
         GREEN_LIGHT,
         PLAYER_MOVED,
+        KICK_PLAYER,
+        PLAYER_WINS
     };
 
 
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onPayloadReceived(@NonNull final String roomId, @NonNull Payload payload) {
             Commands c = Commands.valueOf(new String(payload.asBytes(), UTF_8));
+            joinRoomFragment.commandResponse(c);
             if (c.equals(Commands.RED_LIGHT)) {
                 final long lastUpdate = System.currentTimeMillis();
                 Log.d(CLASSTAG,"REDLIGHTTTT");
@@ -103,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (actualTime - lastUpdate < 200) return;
                                 //player gerak
                                 slaveConnectionClient.sendPayload(roomId,Payload.fromBytes(Commands.PLAYER_MOVED.name().getBytes(UTF_8)));
-
+                                joinRoomFragment.commandResponse(Commands.KICK_PLAYER);
                             }
                         }
                     }
@@ -113,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 };
+            } else if (c.equals(Commands.PLAYER_WINS)) {
+                //hore menang :)
+
+
 
 
             }
@@ -294,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
     public void removePlayer(String playerId) {roomFragment.clearPlayerSlot(playerList.indexOf(playerId));playerList.remove(playerId); playerListx.remove(playerId);}
     public void kickPlayer(String playerId) {
         roomConnectionClient.disconnectFromEndpoint(playerId); removePlayer(playerId);
-        Log.d(CLASSTAG,playerId + "has been kicked due to moving!");
+        Log.d(CLASSTAG,playerId + "has been kicked");
     }
     public ArrayList<String> getPlayerList() {return playerList;}
     public String getPlayerName(String playerId) {return playerListx.get(playerId);}
@@ -304,6 +311,17 @@ public class MainActivity extends AppCompatActivity {
                     slaveId, Payload.fromBytes(c.name().getBytes(UTF_8)));
         }
     }
+    public void sendSpecificCommand(Commands c, int id) {
+        String playerId = getPlayerList().get(id);
+        if (c.equals(Commands.KICK_PLAYER)) {
+            kickPlayer(playerId);
+        } else if (c.equals(Commands.PLAYER_WINS))  {
+
+
+
+        }
+    }
+
 
 
 
