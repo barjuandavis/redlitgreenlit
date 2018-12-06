@@ -30,14 +30,12 @@ public class LobbyFragment extends Fragment {
                 mainActivity.createRoom();
             }
         });
-
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mainActivity.joinRoom();
             }
         });
-
         return v;
     }
 }

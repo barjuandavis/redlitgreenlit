@@ -108,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         lobbyFragment = new LobbyFragment();
+        roomFragment = new RoomFragment();
+        joinRoomFragment = new JoinRoomFragment();
         fragmentTransaction.add(R.id.fragment_c,lobbyFragment).commit();
     }
 
@@ -145,11 +147,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void createRoom() {
-        roomFragment = new RoomFragment();
         fragmentTransaction.replace(R.id.fragment_c, roomFragment).commit();
     }
     public void joinRoom() {
-        joinRoomFragment = new JoinRoomFragment();
         fragmentTransaction.replace(R.id.fragment_c, roomFragment).commit();
     }
     public void broadcastRoom() {
