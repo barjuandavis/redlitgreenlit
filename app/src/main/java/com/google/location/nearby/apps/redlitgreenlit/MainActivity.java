@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             Log.v(CLASSTAG,endpointId + ": onEndpointFound! Making Connection request...");
             CharSequence c = "Connecting to " + endpointId;
             Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
-            roomConnectionClient.requestConnection(playerName,endpointId,roomCallback);
+            roomConnectionClient.requestConnection(playerName,endpointId,slaveCallback);
         }
 
         @Override
@@ -91,7 +91,26 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onDisconnected(String endpointId) { removePlayer(endpointId);}};
+    private final ConnectionLifecycleCallback slaveCallback = new ConnectionLifecycleCallback() {
+        @Override
+        public void onConnectionInitiated(@NonNull String roomId, @NonNull ConnectionInfo roomInfo) {
+            //slave berashil connect ke Master
+            Log.v(CLASSTAG,"Initiated Connection with room : " + roomInfo.getEndpointName());
+            joinRoomFragment.setRoomName(roomInfo.getEndpointName());
+        }
 
+        @Override
+        public void onConnectionResult(@NonNull String roomId, @NonNull ConnectionResolution res) {
+            if (res.getStatus().isSuccess()) {
+                Log.v(CLASSTAG,"Connection to the room success!");
+            }
+        }
+
+        @Override
+        public void onDisconnected(@NonNull String roomId) {
+
+        }
+    };
     //fragments
     RoomFragment roomFragment;
     JoinRoomFragment joinRoomFragment;
