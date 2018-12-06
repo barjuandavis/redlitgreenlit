@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.gms.nearby.connection.*;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_main);
-        playerName = getIntent().getStringExtra("name");
+        playerName = getIntent().getStringExtra("playerName");
         searching = false;
         finding = false;
         fragmentManager = getSupportFragmentManager();
@@ -145,11 +146,12 @@ public class MainActivity extends AppCompatActivity {
         recreate();
     }
 
-
     public void createRoom() {
+        fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_c, roomFragment).commit();
     }
     public void joinRoom() {
+        fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_c, roomFragment).commit();
     }
     public void broadcastRoom() {
