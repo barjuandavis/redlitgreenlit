@@ -12,7 +12,8 @@
       android:id="@+id/broadcast"
       android:text="@string/start_searching"
       android:background="@drawable/button_custom"
-      android:layout_rowWeight="1"/>
+      android:layout_rowWeight="1"
+      android:layout_marginBottom="20dp"/>
 
 
   <GridLayout
@@ -25,6 +26,7 @@
       android:id="@+id/player_list"
       android:layout_rowWeight="4"
       android:background="@color/colorPrimary">
+
       <TextView
           android:text="@string/connected_user"
           android:layout_width="0dp"
@@ -35,7 +37,8 @@
           android:layout_columnWeight="5"
           android:layout_rowWeight="1"
           android:layout_gravity="fill"
-          />
+          android:gravity="center"/>
+
     <Button
         android:text="@string/empty_slot"
         android:layout_width="0dp"
@@ -43,8 +46,8 @@
         android:id="@+id/player1"
         android:layout_columnWeight="5"
         android:layout_rowWeight="4"
-        android:layout_gravity="fill"
-        />
+        android:layout_gravity="fill" />
+
     <Button
         android:text="@string/empty_slot"
         android:layout_width="0dp"
@@ -52,8 +55,8 @@
         android:id="@+id/player2"
         android:layout_columnWeight="5"
         android:layout_rowWeight="4"
-        android:layout_gravity="fill"
-        />
+        android:layout_gravity="fill" />
+
     <Button
         android:text="@string/empty_slot"
         android:layout_width="wrap_content"
@@ -61,8 +64,8 @@
         android:id="@+id/player3"
         android:layout_columnWeight="3"
         android:layout_rowWeight="1"
-        android:layout_gravity="fill"
-        />
+        android:layout_gravity="fill" />
+
     <Button
         android:text="@string/empty_slot"
         android:layout_width="0dp"
@@ -70,8 +73,8 @@
         android:id="@+id/player4"
         android:layout_columnWeight="3"
         android:layout_rowWeight="4"
-        android:layout_gravity="fill"
-        />
+        android:layout_gravity="fill" />
+
     <Button
         android:text="@string/empty_slot"
         android:layout_width="0dp"
@@ -79,14 +82,17 @@
         android:id="@+id/player5"
         android:layout_columnWeight="3"
         android:layout_rowWeight="4"
-        android:layout_gravity="fill"
-        />
+        android:layout_gravity="fill" />
+
   </GridLayout>
+
   <Button
       android:text="Green"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:id="@+id/button_change"
       android:background="@color/green"
-      android:layout_rowWeight="8"/>
+      android:layout_rowWeight="8"
+      android:layout_marginTop="20dp"/>
+
 </GridLayout>
