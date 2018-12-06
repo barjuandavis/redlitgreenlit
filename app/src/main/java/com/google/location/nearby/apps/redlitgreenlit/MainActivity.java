@@ -4,6 +4,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,8 +26,12 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.*;
 import com.google.android.gms.tasks.Task;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Activity controlling the Rock Paper Scissors game
@@ -33,11 +43,25 @@ public class MainActivity extends AppCompatActivity {
     private static final int MAX_PLAYERS = 5;
     private static final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.ACCESS_COARSE_LOCATION,};
     private static final int REQUEST_CODE_REQUIRED_PERMISSIONS = 1;
+    static final int ROLE_GUARD = 147;
+    static final int ROLE_PLAYER = 123;
+    static final int MINTA_JARAK = 573;
+    static int ROLE;
+
+    public enum Commands {
+        RED_LIGHT,
+        GREEN_LIGHT,
+        PLAYER_MOVED,
+    };
+
+
 
     private String playerName;
     private boolean searching;
     private boolean finding;
     private ArrayList<String> playerList;
+    private HashMap<String,String> playerListx;
+
 
     private final EndpointDiscoveryCallback endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
         @Override
@@ -56,30 +80,76 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
         }
     };
-    private final PayloadCallback payloadCallback = new PayloadCallback() {
+
+    private final PayloadCallback slavePayloadCallback = new PayloadCallback() {
         @Override
-        public void onPayloadReceived(String endpointId, Payload payload) {
-            //  opponentChoice = MainActivity.GameChoice.valueOf(new String(payload.asBytes(), UTF_8));
+        public void onPayloadReceived(@NonNull final String roomId, @NonNull Payload payload) {
+            Commands c = Commands.valueOf(new String(payload.asBytes(), UTF_8));
+            if (c.equals(Commands.RED_LIGHT)) {
+                final long lastUpdate = System.currentTimeMillis();
+                Log.d(CLASSTAG,"REDLIGHTTTT");
+                SensorEventListener s = new SensorEventListener() {
+                    @Override
+                    public void onSensorChanged(SensorEvent event) {
+                        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                            float [] values = event.values;
+                            float x = values[0];
+                            float y = values[0];
+                            float z = values[0];
+
+                            float acVect = (x*x + y*y + z*z) / (SensorManager.GRAVITY_EARTH*SensorManager.GRAVITY_EARTH);
+                            long actualTime = System.currentTimeMillis();
+                            if (acVect >= 1.5f) {
+                                if (actualTime - lastUpdate < 200) return;
+                                //player gerak
+                                slaveConnectionClient.sendPayload(roomId,Payload.fromBytes(Commands.PLAYER_MOVED.name().getBytes(UTF_8)));
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+                    }
+                };
+
+
+            }
+        }
+
+        @Override
+        public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
+
+        }
+    };
+    private final PayloadCallback roomPayloadCallback = new PayloadCallback() {
+        @Override
+        public void onPayloadReceived(String playerId, Payload payload) {
+            Commands c = Commands.valueOf(new String(payload.asBytes(), UTF_8));
+            if (c.equals(Commands.PLAYER_MOVED)) {
+                kickPlayer(playerId);
+            }
         }
 
         @Override
         public void onPayloadTransferUpdate(String endpointId, PayloadTransferUpdate update) {
             if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
-                //finishRound();
+                 //FIGURE OUT WHAT PAYLOAD IT IS
                 //ini kalo payload sukses disini (UNTUK GUARD)
             }
         }
     };
     private ConnectionsClient roomConnectionClient;
-    private ConnectionsClient playerConnectionClient;
+    private ConnectionsClient slaveConnectionClient;
     private final ConnectionLifecycleCallback roomCallback = new ConnectionLifecycleCallback() {
         @Override
         public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
             Log.v(CLASSTAG,"Connection Initiated with " + endpointId);
-            roomConnectionClient.acceptConnection(endpointId, payloadCallback);
+            roomConnectionClient.acceptConnection(endpointId, roomPayloadCallback);
             CharSequence c = "Hello, " + connectionInfo.getEndpointName() + "!";
             Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
-            addPlayer(connectionInfo.getEndpointName());
+            addPlayer(endpointId, connectionInfo.getEndpointName());
         }
         @Override
         public void onConnectionResult(String endpointId, ConnectionResolution result) {
@@ -96,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         public void onConnectionInitiated(@NonNull String roomId, @NonNull ConnectionInfo roomInfo) {
             //slave berashil connect ke Master
             Log.v(CLASSTAG,"Initiated Connection with room : " + roomInfo.getEndpointName());
+            slaveConnectionClient.acceptConnection(roomId, slavePayloadCallback);
             joinRoomFragment.setRoomName(roomInfo.getEndpointName());
         }
 
@@ -141,9 +212,10 @@ public class MainActivity extends AppCompatActivity {
         roomFragment = new RoomFragment();
         joinRoomFragment = new JoinRoomFragment();
         playerList = new ArrayList<String>();
+        playerListx = new HashMap<>();
         fragmentTransaction.add(R.id.fragment_c,lobbyFragment).commit();
         roomConnectionClient = Nearby.getConnectionsClient(this);
-        playerConnectionClient = Nearby.getConnectionsClient(this);
+        slaveConnectionClient = Nearby.getConnectionsClient(this);
     }
 
     @Override
@@ -179,10 +251,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createRoom() {
+        ROLE = ROLE_GUARD;
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_c, roomFragment).commit();
     }
     public void joinRoom() {
+        ROLE = ROLE_PLAYER;
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_c, joinRoomFragment).commit();
     }
@@ -203,28 +277,38 @@ public class MainActivity extends AppCompatActivity {
         flipFindingSwitch();
         if (isFinding()) {
             Log.v(CLASSTAG,"Finding a room with serviceId: " + getPackageName());
-            playerConnectionClient.startDiscovery(getPackageName(), endpointDiscoveryCallback,
+            slaveConnectionClient.startDiscovery(getPackageName(), endpointDiscoveryCallback,
                 new DiscoveryOptions.Builder().setStrategy(MainActivity.STRATEGY).build());
         }
         else {
             Log.v(CLASSTAG,"Room finding stopped.");
-            playerConnectionClient.stopDiscovery();
+            slaveConnectionClient.stopDiscovery();
+        }
+    }
+
+    //PUNYA ROOM
+    public boolean isSearching() {return searching;}
+    public void flipSearchSwitch() {this.searching = !this.searching;}
+    public void addPlayer(String playerId, String playerName) {if (!isFull()) {playerList.add(playerId); roomFragment.setPlayerSlot(playerList.indexOf(playerId),playerName); playerListx.put(playerId,playerName);}}
+    public boolean isFull() {return playerList.size() == MAX_PLAYERS;}
+    public void removePlayer(String playerId) {roomFragment.clearPlayerSlot(playerList.indexOf(playerId));playerList.remove(playerId); playerListx.remove(playerId);}
+    public void kickPlayer(String playerId) {
+        roomConnectionClient.disconnectFromEndpoint(playerId); removePlayer(playerId);
+        Log.d(CLASSTAG,playerId + "has been kicked due to moving!");
+    }
+    public ArrayList<String> getPlayerList() {return playerList;}
+    public String getPlayerName(String playerId) {return playerListx.get(playerId);}
+    public void sendCommand(Commands c) {
+        for (String slaveId : getPlayerList()) {
+            roomConnectionClient.sendPayload(
+                    slaveId, Payload.fromBytes(c.name().getBytes(UTF_8)));
         }
     }
 
 
-    public boolean isSearching() {return searching;}
+
+    //PUNYA JOIN ROOM
     public boolean isFinding() {return finding;}
-
-
     public void flipFindingSwitch() {this.finding = !this.finding;}
-    public void flipSearchSwitch() {this.searching = !this.searching;}
-    public void addPlayer(String playerId) {if (!isFull()) {playerList.add(playerId); roomFragment.setPlayerSlot(playerList.indexOf(playerId),playerId);}}
-    public boolean isFull() {return playerList.size() == MAX_PLAYERS;}
-    public void removePlayer(String playerId) {roomFragment.clearPlayerSlot(playerList.indexOf(playerId));playerList.remove(playerId);}
-    public void kickPlayer(String playerId) {
-        roomConnectionClient.disconnectFromEndpoint(playerId); 
-    }
-    public ArrayList<String> getPlayerList() {return playerList;}
 
 }

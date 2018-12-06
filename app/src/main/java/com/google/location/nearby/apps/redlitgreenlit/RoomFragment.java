@@ -1,6 +1,7 @@
 package com.google.location.nearby.apps.redlitgreenlit;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,13 @@ public class RoomFragment extends Fragment {
     private MainActivity mainActivity;
     private GridLayout playerListLayout;
 
-    private Button broadcastButton;
+    private Button broadcastButton, changeButton;
     private Button[] playerButton;
+
+    private MainActivity.Commands command;
+    private boolean gameStarted, redlight;
+
+
 
     @Nullable
     @Override
@@ -28,14 +34,15 @@ public class RoomFragment extends Fragment {
 
         playerButton = new Button[5];
         broadcastButton = v.findViewById(R.id.broadcast);
-
+        gameStarted = false;
+        redlight = true;
         playerListLayout = v.findViewById(R.id.player_list);
             playerButton[0] = v.findViewById(R.id.player1);
             playerButton[1] = v.findViewById(R.id.player2);
             playerButton[2] = v.findViewById(R.id.player3);
             playerButton[3] = v.findViewById(R.id.player4);
             playerButton[4] = v.findViewById(R.id.player5);
-
+         changeButton = v.findViewById(R.id.button_change);
         return v;
     }
 
@@ -62,7 +69,12 @@ public class RoomFragment extends Fragment {
                 }
             });
         }
-
+        changeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               gameSession();
+            }
+        });
     }
 
     @Override
@@ -80,4 +92,38 @@ public class RoomFragment extends Fragment {
     public void clearPlayerSlot(int id) {
         playerButton[id].setText(R.string.empty_slot);
     }
+    public void gameSession() {
+        if (!isGameStarted()) {
+            setGameStarted(true);
+        } else {
+            flipLight();
+        }
+    }
+
+    private void flipLight() {
+        if (redlight) {
+            //flip to green
+            changeButton.setBackgroundColor(getResources().getColor(R.color.green,null));
+            changeButton.setText(R.string.green_light);
+            mainActivity.sendCommand(MainActivity.Commands.GREEN_LIGHT);
+            redlight = false;
+        } else {
+            changeButton.setBackgroundColor(getResources().getColor(R.color.red,null));
+            changeButton.setText(R.string.red_light);
+            mainActivity.sendCommand(MainActivity.Commands.RED_LIGHT);
+            redlight = true;
+        }
+
+
+    }
+
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
+
 }

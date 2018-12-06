@@ -22,4 +22,6 @@
     <string name="red_light">Red Light!</string>
     <string name="green_light">Green Light!</string>
 
+    <string name="start_game">Start Game</string>
+
 </resources>

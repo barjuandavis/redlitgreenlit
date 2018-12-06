@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,12 +18,14 @@ public class JoinRoomFragment extends Fragment {
     private Button findRoom;
     private MainActivity mainActivity;
     private TextView roomName;
+    private RelativeLayout backgrounder;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.join_room, container, false);
         findRoom = v.findViewById(R.id.find_room);
         roomName = v.findViewById(R.id.roomName);
+        backgrounder = v.findViewById(R.id.backgrounder);
         mainActivity = (MainActivity)getActivity();
         findRoom.setOnClickListener(new View.OnClickListener() {
             @Override
