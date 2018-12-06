@@ -146,19 +146,20 @@ public class RoomFragment extends Fragment {
         this.gameStarted = gameStarted;
     }
     public void playerMenu(int i) {
+        final int inner = i;
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
         b.setMessage("What do you want to do with " + playerButton[i].getText() + "?")
                 .setCancelable(true)
                 .setPositiveButton("Win", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        mainActivity.sendSpecificCommand(MainActivity.Commands.PLAYER_WINS,inner);
                     }
                 })
                 .setNegativeButton("Kick", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        mainActivity.sendSpecificCommand(MainActivity.Commands.KICK_PLAYER,inner);
                     }
                 });
         AlertDialog a = b.create();

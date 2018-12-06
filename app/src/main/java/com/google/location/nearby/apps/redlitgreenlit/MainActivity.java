@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
                                 if (actualTime - lastUpdate < 200) return;
                                 //player gerak
                                 slaveConnectionClient.sendPayload(roomId,Payload.fromBytes(Commands.PLAYER_MOVED.name().getBytes(UTF_8)));
-                                joinRoomFragment.commandResponse(Commands.KICK_PLAYER);
                             }
                         }
                     }
@@ -116,12 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 };
-            } else if (c.equals(Commands.PLAYER_WINS)) {
-                //hore menang :)
-
-
-
-
             }
         }
 
@@ -316,9 +309,8 @@ public class MainActivity extends AppCompatActivity {
         if (c.equals(Commands.KICK_PLAYER)) {
             kickPlayer(playerId);
         } else if (c.equals(Commands.PLAYER_WINS))  {
-
-
-
+            roomConnectionClient.sendPayload(
+                    playerId, Payload.fromBytes(c.name().getBytes(UTF_8)));
         }
     }
 
