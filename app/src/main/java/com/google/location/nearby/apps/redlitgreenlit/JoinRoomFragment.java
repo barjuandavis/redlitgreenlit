@@ -40,6 +40,6 @@ public class JoinRoomFragment extends Fragment {
 
     public void setRoomName(String roomName) {
         String s = String.format(roomName, R.string.joined_to_x_room);
-        this.roomName.setText(s);
+        this.roomName.setText("You're in: " + s);
     }
 }

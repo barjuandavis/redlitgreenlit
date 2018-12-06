@@ -46,7 +46,9 @@
         android:id="@+id/player1"
         android:layout_columnWeight="5"
         android:layout_rowWeight="4"
-        android:layout_gravity="fill" />
+        android:layout_gravity="fill"
+        android:enabled="false"
+        android:background="@color/disabled"/>
 
     <Button
         android:text="@string/empty_slot"
@@ -55,7 +57,9 @@
         android:id="@+id/player2"
         android:layout_columnWeight="5"
         android:layout_rowWeight="4"
-        android:layout_gravity="fill" />
+        android:layout_gravity="fill"
+        android:enabled="false"
+        android:background="@color/disabled" />
 
     <Button
         android:text="@string/empty_slot"
@@ -64,7 +68,9 @@
         android:id="@+id/player3"
         android:layout_columnWeight="3"
         android:layout_rowWeight="1"
-        android:layout_gravity="fill" />
+        android:layout_gravity="fill"
+        android:enabled="false"
+        android:background="@color/disabled"/>
 
     <Button
         android:text="@string/empty_slot"
@@ -73,7 +79,9 @@
         android:id="@+id/player4"
         android:layout_columnWeight="3"
         android:layout_rowWeight="4"
-        android:layout_gravity="fill" />
+        android:layout_gravity="fill"
+        android:enabled="false"
+        android:background="@color/disabled"/>
 
     <Button
         android:text="@string/empty_slot"
@@ -82,7 +90,9 @@
         android:id="@+id/player5"
         android:layout_columnWeight="3"
         android:layout_rowWeight="4"
-        android:layout_gravity="fill" />
+        android:layout_gravity="fill"
+        android:enabled="false"
+        android:background="@color/disabled" />
 
   </GridLayout>
 

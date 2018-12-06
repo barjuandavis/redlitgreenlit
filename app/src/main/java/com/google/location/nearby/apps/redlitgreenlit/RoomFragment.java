@@ -74,6 +74,8 @@ public class RoomFragment extends Fragment {
     public void setPlayerSlot(int id, String playerName) {
         String s = String.format(playerName, R.string.filled_slot);
         playerButton[id].setText(s);
+        playerButton[id].setEnabled(true);
+        playerButton[id].setBackgroundColor(getResources().getColor(R.color.colorSecondaryLight, null));
     }
     public void clearPlayerSlot(int id) {
         playerButton[id].setText(R.string.empty_slot);
