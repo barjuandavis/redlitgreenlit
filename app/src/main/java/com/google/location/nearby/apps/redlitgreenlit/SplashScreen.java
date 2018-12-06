@@ -15,8 +15,8 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        b.findViewById(R.id.start_button);
-        et.findViewById(R.id.name);
+        b = findViewById(R.id.start_button);
+        et = findViewById(R.id.name);
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
