@@ -1,6 +1,6 @@
 package com.google.location.nearby.apps.redlitgreenlit;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class Start extends AppCompatActivity {
