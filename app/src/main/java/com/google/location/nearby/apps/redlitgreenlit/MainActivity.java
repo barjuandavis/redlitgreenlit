@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         lobbyFragment = new LobbyFragment();
         roomFragment = new RoomFragment();
         joinRoomFragment = new JoinRoomFragment();
+        playerList = new ArrayList<String>();
         fragmentTransaction.add(R.id.fragment_c,lobbyFragment).commit();
         roomConnectionClient = Nearby.getConnectionsClient(this);
         playerConnectionClient = Nearby.getConnectionsClient(this);
