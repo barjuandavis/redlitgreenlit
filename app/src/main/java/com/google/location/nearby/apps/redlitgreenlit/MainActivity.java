@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void joinRoom() {
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_c, roomFragment).commit();
+        fragmentTransaction.replace(R.id.fragment_c, joinRoomFragment).commit();
     }
     public void broadcastRoom() {
         flipSearchSwitch();
