@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
@@ -13,61 +14,70 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import com.google.android.gms.nearby.connection.Strategy;
+import com.google.android.gms.nearby.connection.*;
 
 /** Activity controlling the Rock Paper Scissors game */
 public class MainActivity extends AppCompatActivity {
-  /** The Tag */
-  static final String TAG = "RockPaperScissors";
-  /** The Tag */
-  /** Permissions */
-  private static final String[] REQUIRED_PERMISSIONS =
-          new String[] {Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.ACCESS_COARSE_LOCATION,};
+  private static final String[] REQUIRED_PERMISSIONS = new String[] {Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.ACCESS_COARSE_LOCATION,};
   private static final int REQUEST_CODE_REQUIRED_PERMISSIONS = 1;
-  /** Permissions */
 
-  GameRoom gameRoom;
+
+  private ConnectionsClient connectionsClient;
+  final ConnectionLifecycleCallback connectionLifecycleCallback = new ConnectionLifecycleCallback() {
+              @Override
+              public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
+                  Log.i(MainActivity.TAG, "onConnectionInitiated: accepting connection");
+                  connectionsClient.acceptConnection(endpointId, payloadCallback); //terima 2-2nya
+              }
+
+              @Override
+              public void onConnectionResult(String endpointId, ConnectionResolution result) {
+                  if (result.getStatus().isSuccess()) {
+                      addPlayer(endpointId);
+                  }
+              }
+              @Override
+              public void onDisconnected(String endpointId) {
+                    removePlayer(endpointId);
+              }
+          };
+  final EndpointDiscoveryCallback endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
+        @Override
+        public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo endpointInfo) {
+            //oooo u got an endpoint!
+        }
+
+        @Override
+        public void onEndpointLost(@NonNull String endpointId) {
+            //bikin notice "terputus dari room"
+        }
+    };
+  final PayloadCallback payloadCallback = new PayloadCallback() {
+        @Override
+        public void onPayloadReceived(String endpointId, Payload payload) {
+            //  opponentChoice = MainActivity.GameChoice.valueOf(new String(payload.asBytes(), UTF_8));
+        }
+
+        @Override
+        public void onPayloadTransferUpdate(String endpointId, PayloadTransferUpdate update) {
+            if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                //finishRound();
+                //ini kalo payload sukses disini (UNTUK GUARD)
+            }
+        }
+    };
+  RoomFragment roomFragment;
   static final Strategy STRATEGY = Strategy.P2P_STAR;
 
 
-  // Our randomly generated name
-  private Button gameRoomButton, joinRoomButton;
-  private EditText name;
-
-
-  // Callbacks for finding other devices (PUT THIS CALLBACK ON ROOMFINDER)
- /* private final EndpointDiscoveryCallback endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
-            @Override
-            public void onEndpointFound(String endpointId, DiscoveredEndpointInfo info) {
-              Log.i(TAG, "onEndpointFound: endpoint found, connecting");
-              connectionsClient.requestConnection(codeName, endpointId, connectionLifecycleCallback);
-            }
-
-            @Override
-            public void onEndpointLost(String endpointId) {}
-          };
-          */
 
 
   @Override
   protected void onCreate(@Nullable Bundle bundle) {
-    super.onCreate(bundle);
-    setContentView(R.layout.activity_main);
-    gameRoomButton = findViewById(R.id.create_game_room);
-    joinRoomButton = findViewById(R.id.join_room);
-    name = findViewById(R.id.name);
-    gameRoomButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        createGameRoom();
-      }
-    });
-    joinRoomButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        joinGameRoom();
-      }
-    });
+        super.onCreate(bundle);
+        setContentView(R.layout.activity_main);
+
+
   }
   @Override
   protected void onStart() {
@@ -113,25 +123,14 @@ public class MainActivity extends AppCompatActivity {
   }
   /** Finds an opponent to play the game with using Nearby Connections. */
   public void createGameRoom () {
-    Intent i = new Intent(getApplicationContext(),GameRoom.class);
-    checkNames(i);
+
   }
 
   public void joinGameRoom () {
-    Intent i = new Intent(getApplicationContext(),Player.class);
-    checkNames(i);
+
   }
 
   private void checkNames(Intent i) {
-    if (name.getText().toString().length() == 0) {
-      Toast.makeText(getApplicationContext(), "please enter your name",
-              Toast.LENGTH_SHORT).show();
-    }
-    else {
-      i.putExtra("guard_name",name.getText().toString());
-      startActivity(i);
-    }
+
   }
-
-
 }

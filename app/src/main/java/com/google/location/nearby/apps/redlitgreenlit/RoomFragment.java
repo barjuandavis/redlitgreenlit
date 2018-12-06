@@ -12,7 +12,7 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.*;
 import java.util.ArrayList;
 
-public class GameRoom extends AppCompatActivity {
+public class RoomFragment extends AppCompatActivity {
     //primitives
     private String roomName;
     private boolean searching;
@@ -25,39 +25,8 @@ public class GameRoom extends AppCompatActivity {
     private ArrayList<String> playerList;
     private Button broadcastButton;
     private Button[] playerButton;
-    private final ConnectionLifecycleCallback connectionLifecycleCallback =
-            new ConnectionLifecycleCallback() {
-                @Override
-                public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
-                    Log.i(MainActivity.TAG, "onConnectionInitiated: accepting connection");
-                    roomClient.acceptConnection(endpointId, payloadCallback); //terima 2-2nya
-                }
 
-                @Override
-                public void onConnectionResult(String endpointId, ConnectionResolution result) {
-                    if (result.getStatus().isSuccess()) {
-                        addPlayer(endpointId);
-                    }
-                }
-                @Override
-                public void onDisconnected(String endpointId) {
-                    removePlayer(endpointId);
-                }
-            };
-    private final PayloadCallback payloadCallback = new PayloadCallback() {
-        @Override
-        public void onPayloadReceived(String endpointId, Payload payload) {
-            //  opponentChoice = MainActivity.GameChoice.valueOf(new String(payload.asBytes(), UTF_8));
-        }
 
-        @Override
-        public void onPayloadTransferUpdate(String endpointId, PayloadTransferUpdate update) {
-            if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
-                //finishRound();
-                //ini kalo payload sukses disini (UNTUK GUARD)
-            }
-        }
-    };
 
     @Override
     protected void onCreate(@Nullable Bundle bundle) {
@@ -107,11 +76,8 @@ public class GameRoom extends AppCompatActivity {
     }
 
     public void addPlayer(String playerId) {
-        Resources res = getResources();
         if (!isFull()) {
             playerList.add(playerId);
-            String s = String.format(res.getString(R.string.filled_slot),playerId);
-            playerButton[playerList.indexOf(playerId)].setText(s);
         }
     }
 
@@ -119,8 +85,5 @@ public class GameRoom extends AppCompatActivity {
         return playerList.size() == MAX_PLAYERS;
     }
 
-    public void removePlayer(String playerId) {
-        playerButton[playerList.indexOf(playerId)].setText(R.string.empty_slot);
-        playerList.remove(playerId);
-    }
+
 }

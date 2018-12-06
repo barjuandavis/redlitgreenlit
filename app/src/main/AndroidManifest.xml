@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Player"/>
-        <activity android:name=".GameRoom"/>
+        <activity android:name=".RoomFragment"/>
+        <activity android:name=".SplashScreen"/>
     </application>
 </manifest>

@@ -37,18 +37,7 @@ public class Player extends AppCompatActivity {
             //tell the UI that ur disconnected
         }
     };
-    private EndpointDiscoveryCallback endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
-        @Override
-        public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo endpointInfo) {
-            //oooo u got an endpoint!
-            playerClient.requestConnection(playerName,endpointId,playerClientCallback);
-        }
 
-        @Override
-        public void onEndpointLost(@NonNull String endpointId) {
-            //bikin notice "terputus dari room"
-        }
-    };
     private PayloadCallback payloadCallback = new PayloadCallback() {
         @Override
         public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
