@@ -5,8 +5,7 @@
     <string name="create_room">I\'m a Guard (Create Room)</string>
     <string name="join_room">I\'m a Player (Find a Room)</string>
     <string name="player_name">Please enter your name here</string>
-
-
+    <string name="connecting_to">Connecting to %1%s</string>
     <string name="status_disconnected">Disconnected</string>
     <string name="searching">Searching for players (tap to stop)</string>
     <string name="start_searching">Start Searching</string>

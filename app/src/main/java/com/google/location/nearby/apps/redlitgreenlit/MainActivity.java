@@ -36,11 +36,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo endpointInfo) {
             //oooo u got an endpoint!
+            CharSequence c = "Connecting to " + endpointId;
+            Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
+            connectionsClient.requestConnection(playerName,endpointId,connectionLifecycleCallback);
         }
 
         @Override
         public void onEndpointLost(@NonNull String endpointId) {
-            //bikin notice "terputus dari room"
+            CharSequence c = "Connection to Room " + endpointId + " was lost :(";
+            Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
         }
     };
     private final PayloadCallback payloadCallback = new PayloadCallback() {
@@ -61,13 +65,13 @@ public class MainActivity extends AppCompatActivity {
     private final ConnectionLifecycleCallback connectionLifecycleCallback = new ConnectionLifecycleCallback() {
         @Override
         public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
-            Log.i(MainActivity.TAG, "onConnectionInitiated: accepting connection");
             connectionsClient.acceptConnection(endpointId, payloadCallback); //terima 2-2nya
         }
-
         @Override
         public void onConnectionResult(String endpointId, ConnectionResolution result) {
             if (result.getStatus().isSuccess()) {
+                CharSequence c = "Hello, " + endpointId + "!";
+                Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
                 addPlayer(endpointId);
             }
         }
