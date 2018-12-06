@@ -54,36 +54,6 @@ public class RoomFragment extends AppCompatActivity {
 
     //update this method for every successfully connected OR disconnected player.
 
-    private void broadcastRoom() {
-        flipSearchSwitch();
-        if (isSearching())  {
-            broadcastButton.setText(R.string.searching);
-            //PACKAGE NAME IS THE SERVICEID
-            roomName = roomName.concat("\'s room");
-            roomClient.startAdvertising(roomName, getPackageName(), connectionLifecycleCallback,
-                new AdvertisingOptions.Builder().setStrategy(MainActivity.STRATEGY).build());
-        } else {
-            broadcastButton.setText(R.string.start_searching);
-            roomClient.stopAdvertising();
-        }
-    }
-
-    public boolean isSearching() {
-        return searching;
-    }
-    public void flipSearchSwitch() {
-        this.searching = !this.searching;
-    }
-
-    public void addPlayer(String playerId) {
-        if (!isFull()) {
-            playerList.add(playerId);
-        }
-    }
-
-    public boolean isFull() {
-        return playerList.size() == MAX_PLAYERS;
-    }
 
 
 }
