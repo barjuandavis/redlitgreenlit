@@ -4,4 +4,6 @@
   <color name="colorPrimaryDark">#002984</color>
 
   <color name="disabled">#42000000</color>
+  <color name="red">#FF0000</color>
+  <color name="green">#00FF00</color>
 </resources>
