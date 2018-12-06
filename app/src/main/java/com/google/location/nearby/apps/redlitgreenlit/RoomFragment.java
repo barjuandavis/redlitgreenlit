@@ -47,7 +47,7 @@ public class RoomFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mainActivity.broadcastRoom();
-                if (!mainActivity.isSearching()) {
+                if (mainActivity.isSearching()) {
                     broadcastButton.setText(R.string.searching);
                 } else {
                     broadcastButton.setText(R.string.start_searching);

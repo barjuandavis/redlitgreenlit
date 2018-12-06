@@ -79,12 +79,13 @@ public class MainActivity extends AppCompatActivity {
             roomConnectionClient.acceptConnection(endpointId, payloadCallback);
             CharSequence c = "Hello, " + connectionInfo.getEndpointName() + "!";
             Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
+            addPlayer(connectionInfo.getEndpointName());
         }
         @Override
         public void onConnectionResult(String endpointId, ConnectionResolution result) {
             if (result.getStatus().isSuccess()) {
                 Log.v(CLASSTAG,"player " + endpointId + " added!");
-                addPlayer(endpointId);
+
             }
         }
 
