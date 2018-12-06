@@ -44,21 +44,31 @@ public class JoinRoomFragment extends Fragment {
     public void setRoomName(String roomName) {
         String s = String.format(roomName, R.string.joined_to_x_room);
         this.roomName.setText("You're in: " + s);
+        this.roomName.setBackgroundColor(getResources().getColor(R.color.colorPrimary, null));
+        this.backgrounder.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark, null));
     }
 
     public void commandResponse(MainActivity.Commands c) {
         switch (c) {
             case RED_LIGHT:
                 this.roomName.setText(R.string.red_light);
+                this.roomName.setBackgroundColor(getResources().getColor(R.color.red, null));
+                this.backgrounder.setBackgroundColor(getResources().getColor(R.color.red, null));
                 break;
             case GREEN_LIGHT:
                 this.roomName.setText(R.string.green_light);
+                this.roomName.setBackgroundColor(getResources().getColor(R.color.green, null));
+                this.backgrounder.setBackgroundColor(getResources().getColor(R.color.green, null));
                 break;
             case KICK_PLAYER:
                 this.roomName.setText(R.string.you_kicked);
+                this.roomName.setBackgroundColor(getResources().getColor(R.color.red, null));
+                this.backgrounder.setBackgroundColor(getResources().getColor(R.color.red, null));
                 break;
             case PLAYER_WINS:
                 this.roomName.setText(R.string.you_win);
+                this.roomName.setBackgroundColor(getResources().getColor(R.color.green, null));
+                this.backgrounder.setBackgroundColor(getResources().getColor(R.color.green, null));
                 break;
         }
     }
