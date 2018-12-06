@@ -112,10 +112,11 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-                    }
+                    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
                 };
+            } else if (c.equals(Commands.PLAYER_WINS) || c.equals(Commands.KICK_PLAYER)) {
+                //connection cleanup
+                 slaveConnectionClient.disconnectFromEndpoint(roomId);
             }
         }
 
@@ -294,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean isFull() {return playerList.size() == MAX_PLAYERS;}
     public void removePlayer(String playerId) {roomFragment.clearPlayerSlot(playerList.indexOf(playerId));playerList.remove(playerId); playerListx.remove(playerId);}
     public void kickPlayer(String playerId) {
+        sendSpecificCommand(Commands.KICK_PLAYER,playerId);
         roomConnectionClient.disconnectFromEndpoint(playerId); removePlayer(playerId);
         Log.d(CLASSTAG,playerId + "has been kicked");
     }
@@ -307,12 +309,12 @@ public class MainActivity extends AppCompatActivity {
     }
     public void sendSpecificCommand(Commands c, int id) {
         String playerId = getPlayerList().get(id);
-        if (c.equals(Commands.KICK_PLAYER)) {
-            kickPlayer(playerId);
-        } else if (c.equals(Commands.PLAYER_WINS))  {
-            roomConnectionClient.sendPayload(
-                    playerId, Payload.fromBytes(c.name().getBytes(UTF_8)));
-        }
+        sendSpecificCommand(c,playerId);
+    }
+
+    public void sendSpecificCommand(Commands c, String playerId) {
+        roomConnectionClient.sendPayload(
+                playerId, Payload.fromBytes(c.name().getBytes(UTF_8)));
     }
 
 
