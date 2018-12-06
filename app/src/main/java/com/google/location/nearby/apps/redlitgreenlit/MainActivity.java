@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String playerName;
     private boolean searching;
+    private boolean finding;
     private ArrayList<String> playerList;
 
     private final EndpointDiscoveryCallback endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             //oooo u got an endpoint!
             CharSequence c = "Connecting to " + endpointId;
             Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
-            connectionsClient.requestConnection(playerName,endpointId,connectionLifecycleCallback);
+            roomConnectionClient.requestConnection(playerName,endpointId,roomCallback);
         }
 
         @Override
@@ -61,29 +62,28 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-    private ConnectionsClient connectionsClient;
-    private final ConnectionLifecycleCallback connectionLifecycleCallback = new ConnectionLifecycleCallback() {
+    private ConnectionsClient roomConnectionClient;
+    private ConnectionsClient playerConnectionClient;
+    private final ConnectionLifecycleCallback roomCallback = new ConnectionLifecycleCallback() {
         @Override
         public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
-            connectionsClient.acceptConnection(endpointId, payloadCallback); //terima 2-2nya
+            roomConnectionClient.acceptConnection(endpointId, payloadCallback);
+            CharSequence c = "Hello, " + connectionInfo.getEndpointName() + "!";
+            Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
         }
         @Override
         public void onConnectionResult(String endpointId, ConnectionResolution result) {
             if (result.getStatus().isSuccess()) {
-                CharSequence c = "Hello, " + endpointId + "!";
-                Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
                 addPlayer(endpointId);
             }
         }
 
         @Override
-        public void onDisconnected(String endpointId) {
-            removePlayer(endpointId);
-        }
-    };
+        public void onDisconnected(String endpointId) { removePlayer(endpointId);}};
 
     //fragments
     RoomFragment roomFragment;
+    JoinRoomFragment joinRoomFragment;
     LobbyFragment lobbyFragment;
 
     private FragmentManager fragmentManager;
@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         playerName = getIntent().getStringExtra("name");
         searching = false;
+        finding = false;
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         lobbyFragment = new LobbyFragment();
@@ -144,41 +145,44 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void createRoom() {
-        RoomFragment roomFragment = new RoomFragment();
+        roomFragment = new RoomFragment();
         fragmentTransaction.replace(R.id.fragment_c, roomFragment).commit();
     }
-
     public void joinRoom() {
-        JoinRoomFragment roomFragment = new JoinRoomFragment();
+        joinRoomFragment = new JoinRoomFragment();
         fragmentTransaction.replace(R.id.fragment_c, roomFragment).commit();
     }
-
-
     public void broadcastRoom() {
         flipSearchSwitch();
         if (isSearching()) {
             //PACKAGE NAME IS THE SERVICEID
             String s = playerName.concat(" - Room");
-            connectionsClient.startAdvertising(s, getPackageName(), connectionLifecycleCallback,
+            roomConnectionClient.startAdvertising(s, getPackageName(), roomCallback,
                     new AdvertisingOptions.Builder().setStrategy(MainActivity.STRATEGY).build());
         } else {
-            connectionsClient.stopAdvertising();
+            roomConnectionClient.stopAdvertising();
         }
     }
+    public void findRoom() {
+        flipSearchSwitch();
+        if (isFinding()) playerConnectionClient.startDiscovery(playerName, endpointDiscoveryCallback,
+                new DiscoveryOptions.Builder().setStrategy(MainActivity.STRATEGY).build());
+        else playerConnectionClient.stopDiscovery();
+    }
 
-    public ConnectionLifecycleCallback getConnectionLifecycleCallback() {
-        return connectionLifecycleCallback;
-    }
-    public EndpointDiscoveryCallback getEndpointDiscoveryCallback() {
-        return endpointDiscoveryCallback;
-    }
-    public PayloadCallback getPayloadCallback() {
-        return payloadCallback;
-    }
+
     public boolean isSearching() {return searching;}
+    public boolean isFinding() {return finding;}
+
+
+    public void flipFindingSwitch() {this.finding = !this.finding;}
     public void flipSearchSwitch() {this.searching = !this.searching;}
-    public void addPlayer(String playerId) {if (!isFull()) {playerList.add(playerId);}}
+    public void addPlayer(String playerId) {if (!isFull()) {playerList.add(playerId); roomFragment.setPlayerSlot(playerList.indexOf(playerId),playerId);}}
     public boolean isFull() {return playerList.size() == MAX_PLAYERS;}
-    public void removePlayer(String playerId) {playerList.remove(playerId);}
+    public void removePlayer(String playerId) {roomFragment.clearPlayerSlot(playerList.indexOf(playerId));playerList.remove(playerId);}
+    public void kickPlayer(String playerId) {
+        roomConnectionClient.disconnectFromEndpoint(playerId); 
+    }
+    public ArrayList<String> getPlayerList() {return playerList;}
 
 }

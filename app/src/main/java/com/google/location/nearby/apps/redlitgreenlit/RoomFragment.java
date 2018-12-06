@@ -44,6 +44,14 @@ public class RoomFragment extends Fragment {
             playerButton[2] = v.findViewById(R.id.player3);
             playerButton[3] = v.findViewById(R.id.player4);
             playerButton[4] = v.findViewById(R.id.player5);
+        for (int i = 0; i<5; i++) {
+            playerButton[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
         return v;
     }
 
@@ -52,5 +60,12 @@ public class RoomFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         broadcastButton.performClick();
 
+    }
+    public void setPlayerSlot(int id, String playerName) {
+        String s = String.format(playerName, R.string.filled_slot);
+        playerButton[id].setText(s);
+    }
+    public void clearPlayerSlot(int id) {
+        playerButton[id].setText(R.string.empty_slot);
     }
 }
