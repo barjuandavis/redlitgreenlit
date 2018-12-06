@@ -67,40 +67,30 @@ public class RoomFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     playerMenu(0);
-                    playerButton[0].setBackgroundColor(getResources().getColor(R.color.disabled, null));
-                    playerButton[0].setEnabled(false);
                 }
             });
             playerButton[1].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     playerMenu(1);
-                    playerButton[1].setBackgroundColor(getResources().getColor(R.color.disabled, null));
-                    playerButton[1].setEnabled(false);
                 }
             });
             playerButton[2].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     playerMenu(2);
-                    playerButton[2].setBackgroundColor(getResources().getColor(R.color.disabled, null));
-                    playerButton[2].setEnabled(false);
                 }
             });
             playerButton[3].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     playerMenu(3);
-                    playerButton[3].setBackgroundColor(getResources().getColor(R.color.disabled, null));
-                    playerButton[3].setEnabled(false);
                 }
             });
             playerButton[4].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     playerMenu(4);
-                    playerButton[4].setBackgroundColor(getResources().getColor(R.color.disabled, null));
-                    playerButton[4].setEnabled(false);
                 }
             });
         changeButton.setText(R.string.start_game);
@@ -164,12 +154,16 @@ public class RoomFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mainActivity.sendSpecificCommand(MainActivity.Commands.PLAYER_WINS,inner);
+                        playerButton[inner].setBackgroundColor(getResources().getColor(R.color.disabled, null));
+                        playerButton[inner].setEnabled(false);
                     }
                 })
                 .setNegativeButton("Kick", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mainActivity.sendSpecificCommand(MainActivity.Commands.KICK_PLAYER,inner);
+                        playerButton[inner].setBackgroundColor(getResources().getColor(R.color.disabled, null));
+                        playerButton[inner].setEnabled(false);
                     }
                 });
         AlertDialog a = b.create();
