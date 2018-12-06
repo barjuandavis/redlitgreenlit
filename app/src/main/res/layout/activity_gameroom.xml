@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_margin="16dp"
+              android:orientation="vertical" android:id="@+id/lin_layout">
+
+  <Button
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" android:id="@+id/broadcast" android:text="@string/start_searching"/>
+  <TextView
+          android:text="@string/connected_user"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" android:id="@+id/textView2" android:textSize="24sp"/>
+  <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" android:id="@+id/player_list">
+    <Button
+            android:text="@string/empty_slot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/player1"/>
+    <Button
+            android:text="@string/empty_slot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/player2"/>
+    <Button
+            android:text="@string/empty_slot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/player3"/>
+    <Button
+            android:text="@string/empty_slot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/player4"/>
+    <Button
+            android:text="@string/empty_slot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/player5"/>
+  </LinearLayout>
+  <Button
+          android:text="Button"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" android:id="@+id/ "/>
+</LinearLayout>
