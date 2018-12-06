@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void findRoom() {
-        flipSearchSwitch();
+        flipFindingSwitch();
         if (isFinding()) {
             Log.v(CLASSTAG,"Finding a room with serviceId: " + getPackageName());
             playerConnectionClient.startDiscovery(getPackageName(), endpointDiscoveryCallback,
