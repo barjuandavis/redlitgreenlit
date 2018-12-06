@@ -2,8 +2,8 @@
 <resources>
     <string name="app_name">Red Light, Green Light</string>
     <string name="error_missing_permissions">Cannot start without required permissions</string>
-    <string name="create_room">I\'m a Guard (Create Room)</string>
-    <string name="join_room">I\'m a Player (Find a Room)</string>
+    <string name="create_room">I\'m a Guard</string>
+    <string name="join_room">I\'m a Player</string>
     <string name="player_name">Please enter your name here</string>
     <string name="connecting_to">Connecting to %1%s</string>
     <string name="status_disconnected">Disconnected</string>

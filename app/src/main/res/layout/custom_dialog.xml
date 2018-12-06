@@ -13,18 +13,27 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/create_button"
-        android:background="@color/red"
+        android:background="@color/colorPrimary"
         android:layout_rowWeight="1"
         android:layout_gravity="fill"
-        android:layout_marginBottom="10dp"/>
+        android:textSize="35sp"
+        android:layout_marginBottom="20dp"
+        android:shadowColor="@color/disabled"
+        android:textAllCaps="false"
+        android:textStyle="bold"/>
 
     <Button
         android:text="@string/join_room"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/join_button"
-        android:background="@color/green"
+        android:background="@color/colorSecondary"
         android:layout_rowWeight="1"
         android:layout_gravity="fill_vertical"
-        android:layout_marginTop="10dp"/>
+        android:textSize="35sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:shadowColor="@color/disabled"
+        android:textAllCaps="false"
+        android:textStyle="bold"/>
 </GridLayout>
