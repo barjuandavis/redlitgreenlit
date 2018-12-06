@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.*;
 
 import java.util.ArrayList;
@@ -112,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
         roomFragment = new RoomFragment();
         joinRoomFragment = new JoinRoomFragment();
         fragmentTransaction.add(R.id.fragment_c,lobbyFragment).commit();
+        roomConnectionClient = Nearby.getConnectionsClient(this);
+        playerConnectionClient = Nearby.getConnectionsClient(this);
     }
 
     @Override

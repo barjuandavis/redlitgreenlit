@@ -9,9 +9,12 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content" android:id="@+id/broadcast" android:text="@string/start_searching"/>
   <TextView
-          android:text="@string/connected_user"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content" android:id="@+id/textView2" android:textSize="24sp"/>
+      android:text="@string/connected_user"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/textView2"
+      android:textSize="24sp"
+      android:background="@color/colorSecondary"/>
   <LinearLayout
           android:orientation="vertical"
           android:layout_width="match_parent"
@@ -38,7 +41,9 @@
             android:layout_height="wrap_content" android:id="@+id/player5"/>
   </LinearLayout>
   <Button
-          android:text="Button"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent" android:id="@+id/button_change"/>
+      android:text="Green"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:id="@+id/button_change"
+      android:background="@color/green"/>
 </LinearLayout>
