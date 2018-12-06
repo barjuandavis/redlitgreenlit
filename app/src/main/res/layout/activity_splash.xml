@@ -17,31 +17,12 @@
         android:layout_marginBottom="100dp"
         android:padding="30dp">
 
-        <RelativeLayout
+        <ImageView
+            android:src="@drawable/logo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_rowWeight="2">
-            <TextView
-                android:text="Red Light"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView3"
-                android:textColor="@color/red"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:textSize="60sp"/>
-            <TextView
-                android:text="Green Light"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView4"
-                android:textColor="@color/green"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:textSize="60sp"
-                android:layout_below="@+id/textView3"/>
-        </RelativeLayout>
-
+            android:layout_rowWeight="1"
+            android:layout_gravity="center"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -52,7 +33,7 @@
             android:hint="@string/player_name"
             android:background="@color/disabled"
             android:textAlignment="center"
-            android:layout_rowWeight="1"
+            android:layout_rowWeight="2"
             android:layout_marginBottom="10dp"/>
 
         <Button
