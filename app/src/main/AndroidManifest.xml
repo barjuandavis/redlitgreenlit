@@ -16,15 +16,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.google.location.nearby.apps.redlitgreenlit.MainActivity"
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.google.location.nearby.apps.redlitgreenlit.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".Player"/>
-        <activity android:name=".RoomFragment"/>
-        <activity android:name=".SplashScreen"/>
     </application>
 </manifest>

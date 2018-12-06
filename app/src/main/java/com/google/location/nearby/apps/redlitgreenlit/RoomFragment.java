@@ -1,35 +1,30 @@
 package com.google.location.nearby.apps.redlitgreenlit;
 
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.gms.nearby.Nearby;
-import com.google.android.gms.nearby.connection.*;
-import java.util.ArrayList;
+import androidx.fragment.app.Fragment;
 
-public class RoomFragment extends AppCompatActivity {
+public class RoomFragment extends Fragment {
     //primitives
-    private String roomName;
-    private boolean searching;
-    private final int MAX_PLAYERS = 5;
 
-    //UI elements (especially dynamic ones)
+    MainActivity mainActivity;
     private LinearLayout playerListLayout;
-    // Our handle to Nearby Connections
+
     private Button broadcastButton;
     private Button[] playerButton;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle bundle) {
-        super.onCreate(bundle);
-        setContentView(R.layout.activity_gameroom);
-        playerButton = new Button[5]; // 0 is unused
-        roomName = getIntent().getStringExtra("guard_name");
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.gameroom_fragment, container, false);
+        mainActivity = (MainActivity) getActivity();
+        playerButton = new Button[5];
         broadcastButton.findViewById(R.id.broadcast);
         playerListLayout.findViewById(R.id.player_list);
         playerButton[0].findViewById(R.id.player1);
@@ -37,12 +32,6 @@ public class RoomFragment extends AppCompatActivity {
         playerButton[2].findViewById(R.id.player3);
         playerButton[3].findViewById(R.id.player4);
         playerButton[4].findViewById(R.id.player5);
-        this.searching = false;
-}
-
-
-    //update this method for every successfully connected OR disconnected player.
-
-
-
+        return v;
+    }
 }

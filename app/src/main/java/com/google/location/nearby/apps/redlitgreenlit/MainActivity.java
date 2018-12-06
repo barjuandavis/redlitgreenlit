@@ -3,6 +3,7 @@ package com.google.location.nearby.apps.redlitgreenlit;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,9 +22,9 @@ import java.util.ArrayList;
  * Activity controlling the Rock Paper Scissors game
  */
 public class MainActivity extends AppCompatActivity {
-    static final String TAG = "RedLitGreenLit";
-    static final Strategy STRATEGY = Strategy.P2P_STAR;
-    static final int MAX_PLAYERS = 5;
+    private static final String TAG = "RedLitGreenLit";
+    private static final Strategy STRATEGY = Strategy.P2P_STAR;
+    private static final int MAX_PLAYERS = 5;
     private static final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.ACCESS_COARSE_LOCATION,};
     private static final int REQUEST_CODE_REQUIRED_PERMISSIONS = 1;
 
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean searching;
     private ArrayList<String> playerList;
 
-    final EndpointDiscoveryCallback endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
+    private final EndpointDiscoveryCallback endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
         @Override
         public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo endpointInfo) {
             //oooo u got an endpoint!
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             //bikin notice "terputus dari room"
         }
     };
-    final PayloadCallback payloadCallback = new PayloadCallback() {
+    private final PayloadCallback payloadCallback = new PayloadCallback() {
         @Override
         public void onPayloadReceived(String endpointId, Payload payload) {
             //  opponentChoice = MainActivity.GameChoice.valueOf(new String(payload.asBytes(), UTF_8));
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
     private ConnectionsClient connectionsClient;
-    final ConnectionLifecycleCallback connectionLifecycleCallback = new ConnectionLifecycleCallback() {
+    private final ConnectionLifecycleCallback connectionLifecycleCallback = new ConnectionLifecycleCallback() {
         @Override
         public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
             Log.i(MainActivity.TAG, "onConnectionInitiated: accepting connection");
@@ -136,6 +137,18 @@ public class MainActivity extends AppCompatActivity {
         }
         recreate();
     }
+
+
+    public void createRoom() {
+        RoomFragment roomFragment = new RoomFragment();
+        fragmentTransaction.replace(R.id.fragment_c, roomFragment).commit();
+    }
+
+    public void joinRoom() {
+        JoinRoomFragment roomFragment = new JoinRoomFragment();
+        fragmentTransaction.replace(R.id.fragment_c, roomFragment).commit();
+    }
+
 
     public void broadcastRoom() {
         flipSearchSwitch();
