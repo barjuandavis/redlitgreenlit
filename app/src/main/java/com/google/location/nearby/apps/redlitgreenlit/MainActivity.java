@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onPayloadReceived(@NonNull final String roomId, @NonNull Payload payload) {
             Commands c = Commands.valueOf(new String(payload.asBytes(), UTF_8));
+            Log.v(CLASSTAG,c.toString() + " Received!");
             joinRoomFragment.commandResponse(c);
             if (c.equals(Commands.RED_LIGHT)) {
                 final long lastUpdate = System.currentTimeMillis();

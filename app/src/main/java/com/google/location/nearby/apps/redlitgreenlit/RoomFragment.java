@@ -93,7 +93,7 @@ public class RoomFragment extends Fragment {
                     playerMenu(4);
                 }
             });
-
+        changeButton.setText(R.string.start_game);
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
