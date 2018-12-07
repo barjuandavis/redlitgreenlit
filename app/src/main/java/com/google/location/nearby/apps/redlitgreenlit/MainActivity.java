@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     long lastUpdate;
     Commands currentLight;
     boolean gerak;
+    private SensorManager sensorManager;
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -223,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         fragmentTransaction.add(R.id.fragment_c,lobbyFragment).commit();
         roomConnectionClient = Nearby.getConnectionsClient(this);
         slaveConnectionClient = Nearby.getConnectionsClient(this);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
     }
 
     @Override
@@ -231,6 +234,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (!hasPermissions(this, REQUIRED_PERMISSIONS)) {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_REQUIRED_PERMISSIONS);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+        sensorManager.unregisterListener(this);
     }
 
     @Override
