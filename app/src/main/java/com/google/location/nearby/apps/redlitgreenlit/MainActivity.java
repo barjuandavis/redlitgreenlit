@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         @Override
         public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo endpointInfo) {
             //oooo u got an endpoint!
-            Log.v(CLASSTAG,endpointId + ": onEndpointFound! Making Connection request...");
-            CharSequence c = "Connecting to " + endpointId;
+            Log.v(CLASSTAG,endpointInfo.getEndpointName() + ": onEndpointFound! Making Connection request...");
+            CharSequence c = "Connecting to " + endpointInfo.getEndpointName();
             Toast.makeText(getApplicationContext(),c, Toast.LENGTH_SHORT).show();
             roomConnectionClient.requestConnection(playerName,endpointId,slaveCallback);
         }
