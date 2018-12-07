@@ -64,10 +64,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float acVect = (x*x + y*y + z*z) / (SensorManager.GRAVITY_EARTH*SensorManager.GRAVITY_EARTH);
             long actualTime = System.currentTimeMillis();
             if (acVect >= 2) {
-                Log.d(CLASSTAG,"KEBANYAKAN GERAK");
                 if (actualTime - lastUpdate < 200) return;
                 if (currentLight.equals(Commands.RED_LIGHT) && roomFragment.isGameStarted()) {
                     gerak = true;
+                    Log.d(CLASSTAG,"EHH LEWAT DONG, gerak = " + gerak);
                 }
             }
         }
