@@ -337,6 +337,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void sendCommand(Commands c) {
         Log.v(CLASSTAG,c.toString());
         if (c.equals(Commands.RED_LIGHT) || c.equals(Commands.GREEN_LIGHT)) currentLight = c;
+        Log.d(CLASSTAG,"currentLight = " + currentLight.toString());
         for (String slaveId : getPlayerList()) {
             roomConnectionClient.sendPayload(
                     slaveId, Payload.fromBytes(c.name().getBytes(UTF_8)));
