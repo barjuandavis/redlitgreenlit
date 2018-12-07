@@ -12,6 +12,8 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
@@ -59,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float x = values[0];
             float y = values[0];
             float z = values[0];
-            Log.d(CLASSTAG,"sensor detek");
             float acVect = (x*x + y*y + z*z) / (SensorManager.GRAVITY_EARTH*SensorManager.GRAVITY_EARTH);
             long actualTime = System.currentTimeMillis();
             if (acVect >= 2) {
@@ -210,6 +211,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onCreate(@Nullable Bundle bundle) {
         super.onCreate(bundle);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
         playerName = getIntent().getStringExtra("playerName");
         searching = false;
@@ -342,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void sendSpecificCommand(Commands c, String playerId) {
         roomConnectionClient.sendPayload(
                 playerId, Payload.fromBytes(c.name().getBytes(UTF_8)));
+        Log.e("Light >>> ", currentLight.toString());
     }
 
 
