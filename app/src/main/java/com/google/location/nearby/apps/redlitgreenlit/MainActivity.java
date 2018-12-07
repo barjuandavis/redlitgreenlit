@@ -65,10 +65,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             long actualTime = System.currentTimeMillis();
             if (acVect >= 2) {
                 if (actualTime - lastUpdate < 200) return;
+                Log.d(CLASSTAG,"Checking light = " + currentLight.toString());
                 if (currentLight.equals(Commands.RED_LIGHT)) {
                     gerak = true;
-                    Log.d(CLASSTAG,"Checking gerak = " + gerak);
+
                 }
+                Log.d(CLASSTAG,"Checking gerak = " + gerak);
             }
         }
     }
