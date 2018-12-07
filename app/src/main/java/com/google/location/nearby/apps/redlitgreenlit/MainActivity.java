@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if (actualTime - lastUpdate < 200) return;
                 if (currentLight.equals(Commands.RED_LIGHT) && roomFragment.isGameStarted()) {
                     gerak = true;
-                    Log.d(CLASSTAG,"EHH LEWAT DONG, gerak = " + gerak);
+                    Log.d(CLASSTAG,"Checking gerak = " + gerak);
                 }
             }
         }
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             Log.v(CLASSTAG,c.toString() + " Received!");
             joinRoomFragment.commandResponse(c);
             if (c.equals(Commands.RED_LIGHT)) {
-                Log.d(CLASSTAG,"REDLIGHTTTT");
+                Log.d(CLASSTAG,"RED_LIGHT Command Received");
                 lastUpdate = System.currentTimeMillis();
                 if (gerak) slaveConnectionClient.sendPayload(roomId,Payload.fromBytes(Commands.PLAYER_MOVED.name().getBytes()));
             } else if (c.equals(Commands.PLAYER_WINS) || c.equals(Commands.KICK_PLAYER)) {
