@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (acVect >= 2) {
                 Log.d(CLASSTAG,"KEBANYAKAN GERAK");
                 if (actualTime - lastUpdate < 200) return;
-                if (currentLight.equals(Commands.RED_LIGHT)) {
+                if (currentLight.equals(Commands.RED_LIGHT) && roomFragment.isGameStarted()) {
                     gerak = true;
                 }
             }
@@ -215,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         searching = false;
         finding = false;
         gerak = false;
+        currentLight = Commands.GREEN_LIGHT;
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         lobbyFragment = new LobbyFragment();
