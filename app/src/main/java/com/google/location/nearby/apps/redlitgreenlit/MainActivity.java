@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         public void onPayloadReceived(@NonNull final String roomId, @NonNull Payload payload) {
             Commands c = Commands.valueOf(new String(payload.asBytes(), UTF_8));
             Log.v(CLASSTAG,c.toString() + " Received!");
+            if (c.equals(Commands.RED_LIGHT) || c.equals(Commands.GREEN_LIGHT)) currentLight = c;
             joinRoomFragment.commandResponse(c);
             if (c.equals(Commands.RED_LIGHT)) {
                 Log.d(CLASSTAG,"RED_LIGHT Command Received");
