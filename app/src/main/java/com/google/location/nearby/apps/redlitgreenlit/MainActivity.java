@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float x = values[0];
             float y = values[0];
             float z = values[0];
-            Log.d(CLASSTAG,"sensor detek");
             float acVect = (x*x + y*y + z*z) / (SensorManager.GRAVITY_EARTH*SensorManager.GRAVITY_EARTH);
             long actualTime = System.currentTimeMillis();
             if (acVect >= 2) {
@@ -341,6 +340,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (c.equals(Commands.RED_LIGHT) || c.equals(Commands.GREEN_LIGHT)) currentLight = c;
         roomConnectionClient.sendPayload(
                 playerId, Payload.fromBytes(c.name().getBytes(UTF_8)));
+        Log.e("Light >>> ", currentLight.toString());
     }
 
 
