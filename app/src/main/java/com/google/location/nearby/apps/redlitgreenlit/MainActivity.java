@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             long actualTime = System.currentTimeMillis();
             if (acVect >= 2) {
                 if (actualTime - lastUpdate < 200) return;
-                if (currentLight.equals(Commands.RED_LIGHT) && roomFragment.isGameStarted()) {
+                if (currentLight.equals(Commands.RED_LIGHT)) {
                     gerak = true;
                     Log.d(CLASSTAG,"Checking gerak = " + gerak);
                 }
@@ -333,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public ArrayList<String> getPlayerList() {return playerList;}
     public String getPlayerName(String playerId) {return playerListx.get(playerId);}
     public void sendCommand(Commands c) {
+        Log.v(CLASSTAG,c.toString());
         if (c.equals(Commands.RED_LIGHT) || c.equals(Commands.GREEN_LIGHT)) currentLight = c;
         for (String slaveId : getPlayerList()) {
             roomConnectionClient.sendPayload(
