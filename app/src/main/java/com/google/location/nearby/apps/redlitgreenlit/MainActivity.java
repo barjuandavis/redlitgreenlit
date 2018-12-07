@@ -326,6 +326,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public ArrayList<String> getPlayerList() {return playerList;}
     public String getPlayerName(String playerId) {return playerListx.get(playerId);}
     public void sendCommand(Commands c) {
+        if (c.equals(Commands.RED_LIGHT) || c.equals(Commands.GREEN_LIGHT)) currentLight = c;
         for (String slaveId : getPlayerList()) {
             roomConnectionClient.sendPayload(
                     slaveId, Payload.fromBytes(c.name().getBytes(UTF_8)));
@@ -337,7 +338,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void sendSpecificCommand(Commands c, String playerId) {
-        if (c.equals(Commands.RED_LIGHT) || c.equals(Commands.GREEN_LIGHT)) currentLight = c;
         roomConnectionClient.sendPayload(
                 playerId, Payload.fromBytes(c.name().getBytes(UTF_8)));
         Log.e("Light >>> ", currentLight.toString());
